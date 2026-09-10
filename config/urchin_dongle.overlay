@@ -1,0 +1,3 @@
+&st7789 {
+    mipi-max-frequency = <8000000>;
+};
