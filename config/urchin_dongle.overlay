@@ -1,3 +1,16 @@
-// 디스플레이 관련 설정은 config/dongle_screen.overlay 로 옮겼다.
-// &st7789 / &apds9960 라벨은 dongle_screen 실드가 있을 때만 존재하므로,
-// 동글 본체 이름(urchin_dongle)으로 두면 화면 없는 빌드에서 파싱이 깨진다.
+&spi3 {
+    cs-gpios = <&xiao_d 2 GPIO_ACTIVE_LOW>;
+};
+
+&st7789 {
+    // 15cm 듀폰선 + GND 1선이라 긴 픽셀 버스트가 깨질 수 있어 보수적으로 낮춤
+    mipi-max-frequency = <1000000>;
+};
+
+// 광 센서 미사용. 모듈 오버레이가 int-gpios로 D2를 잡는데
+// D9 불량 때문에 SPI CS를 D2로 옮겼으므로 핀이 충돌한다.
+// status="okay" 노드가 있으면 CONFIG_APDS9960이 자동으로 켜지므로
+// .conf로는 막을 수 없고 노드를 여기서 꺼야 한다.
+&apds9960 {
+    status = "disabled";
+};

@@ -33,10 +33,11 @@ include:
     cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000
     artifact-name: xiao_dongle
 
-    # 진단용 대조군: dongle_screen 실드를 빼고 디스플레이를 끈다.
-    # 부팅 루프가 dongle_screen 경로에서 오는지 판정하기 위함.
+    # 진단용 대조군: 실드 구성은 그대로 두고 디스플레이만 끈다.
+    # 실드를 빼면 config/urchin_dongle.overlay의 &st7789 라벨이 없어 파싱이 깨지므로,
+    # dongle_screen은 유지한 채 cmake-args로 디스플레이를 강제로 비활성화한다.
   - board: xiao_ble//zmk
-    shield: urchin_dongle
+    shield: urchin_dongle dongle_screen
     snippet: zmk-usb-logging
     cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_ZMK_DISPLAY=n
     artifact-name: xiao_dongle_nodisplay
