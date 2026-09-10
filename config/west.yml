@@ -21,6 +21,8 @@ manifest:
       url-base: https://github.com/urob
     - name: eyesonly
       url-base: https://github.com/eyesonly
+    - name: rayreside
+      url-base: https://github.com/rayreside
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -44,5 +46,8 @@ manifest:
     - name: zmk-poor-mans-led-indicator
       remote: eyesonly
       revision: main
+    - name: zmk-dongle-screen
+      remote: rayreside
+      revision: 0fb12b397be711cf7142c25a163c845782ac3d69
 self:
     path: config
