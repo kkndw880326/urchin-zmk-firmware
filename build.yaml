@@ -29,33 +29,7 @@ include:
     # Urchin
   - board: xiao_ble//zmk
     shield: urchin_dongle dongle_screen urchin_screen_fix
-    snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000
     artifact-name: xiao_dongle
-
-    # --- 진단용 ---
-    # 동글이 한 번도 부팅에 성공한 적이 없다. settings_reset 펌웨어는 USB로 정상
-    # 인식되므로 보드/ZMK 기본은 이상이 없고, 원인은 동글 설정 안에 있다.
-    # 아래 둘로 "화면 모듈"과 "동글 본체 설정"을 가른다.
-
-    # F/G 결과: 눈만(F) 정상, 위젯 없음(D) 정상, 눈+배경(메인) 부팅 루프.
-    # 단독으로는 되고 함께 켤 때만 죽으므로 자원 경합. LVGL 메모리 풀은
-    # urchin_screen_fix.conf에서 48KB로 올렸다(메인에 이미 반영됨).
-
-    # H: 위가 부족할 경우를 대비해 디스플레이 작업 스레드 스택까지 키운 변형
-  - board: xiao_ble//zmk
-    shield: urchin_dongle dongle_screen urchin_screen_fix
-    snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_ZMK_DISPLAY_DEDICATED_THREAD_STACK_SIZE=8192
-    artifact-name: xiao_dongle_h_bigstack
-
-    # E: 화면을 통째로 제거한 순수 동글. 이게 부팅되면 범인은 화면 모듈로 확정되고,
-    #    무엇보다 로그가 읽히기 시작한다.
-  - board: xiao_ble//zmk
-    shield: urchin_dongle
-    snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_ZMK_DISPLAY=n
-    artifact-name: xiao_dongle_e_noscreen
 
   - board: nice_nano@2.0.0
     shield: urchin_left
