@@ -33,31 +33,26 @@ include:
     cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000
     artifact-name: xiao_dongle
 
-    # --- 진단용 3종 ---
+    # --- 진단용 2종 ---
     # 동글이 한 번도 부팅에 성공한 적이 없으므로, 화면이 아니라 동글 자체를 먼저 세운다.
-    # 실드 목록은 셋 다 그대로 둔다(빼면 urchin_dongle.overlay의 &st7789 라벨이 없어 파싱 실패).
+    # 디스플레이를 완전히 끄는 방식(-DCONFIG_ZMK_DISPLAY=n)은 모듈의
+    # drivers/display/CMakeLists.txt가 가드되어 있지 않아 빌드가 깨진다. 그래서
+    # 아래 둘은 디스플레이 계층을 남긴 채 각각 다른 축을 하나씩만 제거한다.
 
-    # A: 디스플레이 계층만 통째로 제거
+    # B: 모듈의 커스텀 화면 코드를 ZMK 기본 화면으로 교체.
+    # STATUS_SCREEN은 Kconfig choice라 =n으로는 못 끄고, 다른 선택지를 =y로 줘야 한다.
   - board: xiao_ble//zmk
     shield: urchin_dongle dongle_screen
     snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_ZMK_DISPLAY=n -DCONFIG_DONGLE_SCREEN_EYES_ACTIVE=n -DCONFIG_DONGLE_SCREEN_BACKGROUND_ACTIVE=n
-    artifact-name: xiao_dongle_a_nodisplay
-
-    # B: 드라이버/LVGL은 남기고 모듈의 커스텀 화면 코드만 제거
-  - board: xiao_ble//zmk
-    shield: urchin_dongle dongle_screen
-    snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=n
+    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN=y
     artifact-name: xiao_dongle_b_stockscreen
 
-    # C: A에 더해 의심 설정을 전부 되돌린 최소 구성.
-    # 부팅 가능성이 가장 높은 조합이며, 이게 뜨면 여기서부터 하나씩 되돌려 범인을 찾는다.
+    # C: 화면은 그대로 두고 BLE/전원 쪽 의심 설정만 기본값으로 되돌린다.
   - board: xiao_ble//zmk
     shield: urchin_dongle dongle_screen
     snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_ZMK_DISPLAY=n -DCONFIG_DONGLE_SCREEN_EYES_ACTIVE=n -DCONFIG_DONGLE_SCREEN_BACKGROUND_ACTIVE=n -DCONFIG_BT_MAX_CONN=6 -DCONFIG_BT_MAX_PAIRED=6 -DCONFIG_ZMK_BLE_EXPERIMENTAL_FEATURES=n -DCONFIG_ZMK_SLEEP=n -DCONFIG_ZMK_POINTING=n -DCONFIG_ZMK_PM_SOFT_OFF=n
-    artifact-name: xiao_dongle_c_minimal
+    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_BT_MAX_CONN=6 -DCONFIG_BT_MAX_PAIRED=6 -DCONFIG_ZMK_BLE_EXPERIMENTAL_FEATURES=n -DCONFIG_ZMK_SLEEP=n -DCONFIG_ZMK_POINTING=n -DCONFIG_ZMK_PM_SOFT_OFF=n
+    artifact-name: xiao_dongle_c_stockble
 
   - board: nice_nano@2.0.0
     shield: urchin_left
