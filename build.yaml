@@ -29,7 +29,17 @@ include:
     # Urchin
   - board: xiao_ble//zmk
     shield: urchin_dongle dongle_screen
+    snippet: zmk-usb-logging
+    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000
     artifact-name: xiao_dongle
+
+    # 진단용 대조군: dongle_screen 실드를 빼고 디스플레이를 끈다.
+    # 부팅 루프가 dongle_screen 경로에서 오는지 판정하기 위함.
+  - board: xiao_ble//zmk
+    shield: urchin_dongle
+    snippet: zmk-usb-logging
+    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_ZMK_DISPLAY=n
+    artifact-name: xiao_dongle_nodisplay
   - board: nice_nano@2.0.0
     shield: urchin_left
     cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
