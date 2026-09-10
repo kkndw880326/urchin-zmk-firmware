@@ -3,7 +3,8 @@
 };
 
 &st7789 {
-    mipi-max-frequency = <8000000>;
+    // 15cm 듀폰선 + GND 1선이라 긴 픽셀 버스트가 깨질 수 있어 보수적으로 낮춤
+    mipi-max-frequency = <1000000>;
 };
 
 // 광 센서 미사용. 모듈 오버레이가 int-gpios로 D2를 잡는데
