@@ -38,13 +38,22 @@ include:
     # 인식되므로 보드/ZMK 기본은 이상이 없고, 원인은 동글 설정 안에 있다.
     # 아래 둘로 "화면 모듈"과 "동글 본체 설정"을 가른다.
 
-    # D: 화면 모듈은 그대로 두고 위젯 코드만 제거.
-    #    (DONGLE_SCREEN_*_ACTIVE는 일반 bool이라 오버라이드가 실제로 먹는다)
+    # D/E 결과: 위젯을 끄면(D) 정상, 모듈을 빼면(E) 정상, 둘 다 켜면 부팅 루프.
+    # 따라서 범인은 눈 또는 배경 위젯. 아래 F/G로 어느 쪽인지 가른다.
+
+    # F: 눈만 켠다
   - board: xiao_ble//zmk
     shield: urchin_dongle dongle_screen urchin_screen_fix
     snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_DONGLE_SCREEN_EYES_ACTIVE=n -DCONFIG_DONGLE_SCREEN_BACKGROUND_ACTIVE=n
-    artifact-name: xiao_dongle_d_nowidgets
+    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_DONGLE_SCREEN_EYES_ACTIVE=y -DCONFIG_DONGLE_SCREEN_BACKGROUND_ACTIVE=n
+    artifact-name: xiao_dongle_f_eyesonly
+
+    # G: 배경만 켠다
+  - board: xiao_ble//zmk
+    shield: urchin_dongle dongle_screen urchin_screen_fix
+    snippet: zmk-usb-logging
+    cmake-args: -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000 -DCONFIG_DONGLE_SCREEN_EYES_ACTIVE=n -DCONFIG_DONGLE_SCREEN_BACKGROUND_ACTIVE=y
+    artifact-name: xiao_dongle_g_bgonly
 
     # E: 화면을 통째로 제거한 순수 동글. 이게 부팅되면 범인은 화면 모듈로 확정되고,
     #    무엇보다 로그가 읽히기 시작한다.
