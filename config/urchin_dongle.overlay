@@ -1,3 +1,7 @@
+&spi3 {
+    cs-gpios = <&xiao_d 2 GPIO_ACTIVE_LOW>;
+};
+
 &st7789 {
-    mipi-max-frequency = <1000000>;
+    mipi-max-frequency = <8000000>;
 };
